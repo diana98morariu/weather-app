@@ -1,4 +1,5 @@
 import React from "react";
+import Home from "./Home"
 
 const Form = props => (
     <form onSubmit={props.getWeather}>

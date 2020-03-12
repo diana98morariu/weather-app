@@ -1,82 +1,29 @@
 import React from "react";
-import Titles from "./components/Titles";
-import Form from "./components/Form";
-import Weather from "./components/Weather";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-const API_KEY = "011407961caec553c4fdd3100af19095";
+import Home from "./components/Home"
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Error from "./components/Error";
+import Navigation from "./components/Navigation"; 
 
 class App extends React.Component {
-  state = {
-    temperature: "",
-    city: "",
-    country: "",
-    humidity: "",
-    description: "",
-    icon: "",
-    error: ""
-  }
-  getWeather = async (e) => {
-    e.preventDefault();
-    const city = e.target.elements.city.value;
-    const country = e.target.elements.country.value;
-    const api_call = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city},${country}uk&appid=${API_KEY}&units=metric`);
-    const data = await api_call.json();
-    
-    if (city && country) {
-      console.log(data);
-      this.setState({
-        temperature: data.main.temp,
-        city: data.name,
-        country: data.sys.country,
-        humidity: data.main.humidity,
-        description: data.weather[0].description,
-        icon: data.weather[0].icon,
-        error: ""
-      })
-    } else {
-        this.setState({
-          temperature: "",
-          city: "",
-          country: "",
-          humidity: "",
-          description: "",
-          icon: "",
-          error: "Please enter the values"
-        })
-      }
-  }
+  
   render() {
     return(
-      <div>
-        <div className="wrapper">
-          <div className="main">
-            <div className="container">
-              <div className="row">
-                <div className="col-xs-5 title-container">
-                  <Titles />
-                </div>
-                <div className="col-xs-7 form-container">
-                  <Form getWeather={this.getWeather}/>
-                  <Weather 
-                    temperature={this.state.temperature}
-                    city={this.state.city}
-                    country={this.state.country}
-                    humidity={this.state.humidity}
-                    description={this.state.description}
-                    icon={this.state.icon}
-                    error={this.state.error}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+      <BrowserRouter>
+        <div>
+          <Navigation />
+          <Switch>
+            <Route  path="/" component={Home} exact />
+            <Route  path="/about" component={About} />
+            <Route  path="/contact" component={Contact} />
+            <Route  component={Error} />
+          </Switch>
         </div>
-      </div>
+      </BrowserRouter>
     );
   }
 }
-
-
-        
 
 export default App;
